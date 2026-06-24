@@ -1,0 +1,57 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account details, onboarding selections, parsed resume, and historical sessions on prep.ai",
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Unique display name or handle"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Email address associated with the account"
+        },
+        "domain": {
+          "type": "string",
+          "description": "Active practice domain e.g. CSE, AIML"
+        },
+        "company": {
+          "type": "string",
+          "description": "Target company e.g. FAANG, FinTech"
+        },
+        "difficulty": {
+          "type": "string",
+          "description": "Interview seniority level"
+        },
+        "resumeProfile": {
+          "type": "object",
+          "description": "Decoded resume structural fields and skills"
+        },
+        "sessions": {
+          "type": "array",
+          "description": "Chronological history of adaptive mock interview results"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the profile was generated"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the profile was last modified"
+        }
+      },
+      "required": ["username", "email", "domain", "company", "difficulty"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Individual persistent profiles secured by Firebase Auth UID"
+    }
+  }
+}

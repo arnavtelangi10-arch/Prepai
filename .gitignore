@@ -1,0 +1,12 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+users_db.json
+forum_db.json
+insights_db.json
+.cursor/

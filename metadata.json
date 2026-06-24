@@ -1,0 +1,11 @@
+{
+  "name": "PrepAI",
+  "description": "Full-scale AI-powered career operating system for technical, HR, coding, and system design interviews with voice simulation and personalized roadmap analysis.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
