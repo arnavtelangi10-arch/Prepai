@@ -1,7 +1,9 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import firebaseConfig from "../../firebase-applet-config.json";
+import { resolveFirebaseConfig, isDummyFirebaseConfig as isDummyConfig } from "./firebaseConfig";
+
+const firebaseConfig = resolveFirebaseConfig();
 
 let app: any;
 let auth: any;
@@ -9,13 +11,11 @@ let googleProvider: any;
 let db: any;
 
 try {
-  // Safe initialization
   app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
   auth = getAuth(app);
   googleProvider = new GoogleAuthProvider();
-  // Select account prompt
   googleProvider.setCustomParameters({
-    prompt: "select_account"
+    prompt: "select_account",
   });
   db = getFirestore(app);
 } catch (error) {
@@ -72,16 +72,10 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
   throw new Error(JSON.stringify(errInfo));
 }
 
-/**
- * Checks if the firebase config is using the default placeholder dummy key.
- */
 export function isDummyFirebaseConfig(): boolean {
-  return !firebaseConfig.apiKey || firebaseConfig.apiKey.includes("DummyKey");
+  return isDummyConfig(firebaseConfig);
 }
 
-/**
- * Persists persistent user profile choices and history directly inside Cloud Firestore.
- */
 export async function persistProfileToFirestore(userId: string, data: any) {
   if (!db || isDummyFirebaseConfig()) return;
   const path = `users/${userId}`;
@@ -98,9 +92,6 @@ export async function persistProfileToFirestore(userId: string, data: any) {
   }
 }
 
-/**
- * Fetches the user profile from Cloud Firestore if available.
- */
 export async function fetchProfileFromFirestore(userId: string): Promise<any | null> {
   if (!db || isDummyFirebaseConfig()) return null;
   const path = `users/${userId}`;
